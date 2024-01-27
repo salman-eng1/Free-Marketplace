@@ -1,7 +1,7 @@
 import 'express-async-errors';
 import http from 'http';
 
-import { winstonLogger } from '@salman-eng1/marketplace-shared';
+import { IEmailMessageDetails, winstonLogger } from '@salman-eng1/marketplace-shared';
 import { Logger } from 'winston';
 import { config } from '@notifications/config';
 import { Application } from 'express';
@@ -9,7 +9,7 @@ import { healthRoutes } from '@notifications/routes';
 import { checkConnection } from '@notifications/elasticsearch';
 import { createConnection } from '@notifications/queues/connection';
 import { Channel } from 'amqplib';
-import { conusumeAuthEmailMessages, conusumeOrderEmailMessages } from './queues/email.Consumer';
+import { consumeAuthEmailMessages, consumeOrderEmailMessages } from './queues/email.Consumer';
 
 
 const SERVER_PORT = 4001;
@@ -26,22 +26,27 @@ export function start(app: Application): void {
 
 
 async function startQueues(): Promise<void> {
-  const message1=JSON.stringify({name: 'auth', description: 'helklo frodsfsdfsm the other side',he: 'sadas'})
-  const message2=JSON.stringify({name: 'order', description: 'helklo frodsfsdfsm the other side',he: 'sadas'})
+  const verificationLink=`${config.CLIENT_URL}/confirm/v_token=dsf54654sdf654sdf65fd4`
+const messageDetails: IEmailMessageDetails= {
+  receiverEmail: 'salman@zeour.co.uk',
+  verifyLink: verificationLink,
+  template: 'verifyEmail'
+}
+  const message1=JSON.stringify(messageDetails)
 
 
   const emailChannel: Channel = await createConnection() as Channel;
-  await conusumeAuthEmailMessages(emailChannel)
+  await consumeAuthEmailMessages(emailChannel)
   await emailChannel.assertExchange(`${config.RABBITMQ_EXCHANGE_AUTH_NAME}`, 'direct')
 
 
-  await conusumeOrderEmailMessages(emailChannel)
+  await consumeOrderEmailMessages(emailChannel)
   await emailChannel.assertExchange(`${config.RABBITMQ_EXCHANGE_ORDER_NAME}`, 'direct')
 
 
-await  emailChannel.publish(`${config.RABBITMQ_EXCHANGE_AUTH_NAME}`, `${config.RABBITMQ_ROUTING_AUTH_KEY}`, Buffer.from(message1))
+  // emailChannel.publish(`${config.RABBITMQ_EXCHANGE_AUTH_NAME}`, `${config.RABBITMQ_ROUTING_AUTH_KEY}`, Buffer.from(message1))
 
-await  emailChannel.publish(`${config.RABBITMQ_EXCHANGE_ORDER_NAME}`, `${config.RABBITMQ_ROUTING_ORDER_KEY}`, Buffer.from(message2))
+// await  emailChannel.publish(`${config.RABBITMQ_EXCHANGE_ORDER_NAME}`, `${config.RABBITMQ_ROUTING_ORDER_KEY}`, Buffer.from(message1))
 
 
 }

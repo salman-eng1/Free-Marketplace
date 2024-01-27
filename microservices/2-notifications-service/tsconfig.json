@@ -7,8 +7,9 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "esModuleInterop": true,
-    "lib": ["dom", "ES2015"],
+    "lib": ["DOM", "ES2023"],
     "module": "CommonJS",
+    
     "moduleResolution": "node",
     "noEmitOnError": true,
     "outDir": "build",
