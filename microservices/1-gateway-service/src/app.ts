@@ -1,5 +1,5 @@
 import express, { Express } from "express"
-import { GatewayServer } from "./server";
+import { GatewayServer } from "@gateway/server";
 
 class Application{
 public initialize(): void{
