@@ -81,20 +81,48 @@ services:
       - elastic
   
   kibana:
-     container_name: kibana_container
-     image: docker.elastic.co/kibana/kibana:8.12.0
-     restart: always
-     environment:
-       - ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
-     ports:
-       - 5601:5601
-     networks:
-       - elastic
-     volumes:
-       - ./kibana.yml:/usr/share/kibana/config/kibana.yml:ro
-     depends_on: 
-       - elasticsearch
-
+    container_name: kibana_container
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    depends_on: 
+      - elasticsearch
+  notifications:
+    container_name: notification_container
+    build:
+      context: ../microservices/2-notifications-service
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 4001:4001
+    env_file: ../microservices/2-notifications-service/.env
+    environment:
+      - ENABLE_APM=0
+      - NODE_ENV=development
+      - CLIENT_URL=http://localhost:3000
+      - RABBITMQ_ENDPOINT=amqp://jobberuser:jobberpass@localhost:5672
+      - RABBITMQ_EXCHANGE_AUTH_NAME =marketplace-auth-notification
+      - RABBITMQ_ROUTING_AUTH_KEY =auth-email
+      - RABBITMQ_QUEUE_AUTH_NAME =auth-email-queue
+      - RABBITMQ_EXCHANGE_ORDER_NAME =marketplace-order-notification
+      - RABBITMQ_ROUTING_ORDER_KEY =order-email
+      - RABBITMQ_QUEUE_ORDER_NAME =order-email-queue
+      - EMAIL_HOST=mail.zeour.co.uk
+      - EMAIL_PORT=465
+      - SENDER_EMAIL=noreply@zeour.co.uk
+      - SENDER_PASSWORD=Temp@@2022
+      - ELASTIC_SEARCH_URL=http://localhost:9200
+      - ELASTIC_APM_SERVER_URL=http://localhost:8200
+      - ELASTIC_APM_SECRET_TOKEN=
+    depends_on: 
+      - elasticsearch
 
 networks:
   elastic:

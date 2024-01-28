@@ -28,9 +28,9 @@ export function start(app: Application): void {
 async function startQueues(): Promise<void> {
   const verificationLink=`${config.CLIENT_URL}/confirm/v_token=dsf54654sdf654sdf65fd4`
 const messageDetails: IEmailMessageDetails= {
-  receiverEmail: 'salman@zeour.co.uk',
-  verifyLink: verificationLink,
-  template: 'verifyEmail'
+  // receiverEmail: 'salman@zeour.co.uk',
+  // verifyLink: verificationLink,
+  // template: 'verifyEmail'
 }
   const message1=JSON.stringify(messageDetails)
 
