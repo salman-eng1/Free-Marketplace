@@ -37,7 +37,7 @@ export class GatewayServer {
         app.use(
             cookieSession({
                 name: 'session',
-                keys: [`${config.SECRET_KEY_ONE}`, `${config.SECRET_KEY_TWO}`,],
+                keys: [`${config.SECRET_KEY_ONE}`,`${config.SECRET_KEY_TWO}`],
                 maxAge: 24 * 7 * 3600000,
                 secure: config.NODE_ENV !== 'development', //updated with value from config
                 //sameSite: none
