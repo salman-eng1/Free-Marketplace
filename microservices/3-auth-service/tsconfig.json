@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "baseUrl": ".",
+    "emitDeclarationOnly": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "lib": ["DOM", "ES2023"],
+    "module": "CommonJS",
+    
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "outDir": "build",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "strict": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "pretty": true,
+    "resolveJsonModule": true,
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ],
+    "paths": {
+      "@auth/*": ["src/*"],  
+      "@salman-eng1/marketplace-shared/*": ["./node_modules/@salman-eng1/marketplace-shared/*"]
+         
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
