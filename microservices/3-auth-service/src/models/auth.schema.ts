@@ -2,13 +2,13 @@ import { sequelize } from '@auth/database';
 import { IAuthDocument } from '@salman-eng1/marketplace-shared';
 import { compare, hash } from 'bcrypt';
 import { DataTypes, Model, ModelDefined, Optional } from 'sequelize';
+import { ModuleTypeOverride, ModuleTypes } from 'ts-node';
 
 const SALT_ROUND = 10;
 
 type AuthUserCreationAttributes = Optional<IAuthDocument, 'id' | 'createdAt' | 'passwordResetToken' | 'passwordResetExpires'>;
-interface AuthModelInstance extends Model<IAuthDocument, AuthUserCreationAttributes>, IAuthDocument {}
 
-const AuthModel: ModelDefined  <AuthModelInstance, AuthUserCreationAttributes> = sequelize.define('auths', {
+const AuthModel: ModelDefined<IAuthDocument, AuthUserCreationAttributes> = sequelize.define('auths', {
   username: {
     type: DataTypes.STRING,
     allowNull: false
@@ -69,16 +69,17 @@ const AuthModel: ModelDefined  <AuthModelInstance, AuthUserCreationAttributes> =
   ]
 });
 
+//it will trigger event to execute the function below once a new document is going to be  created
 AuthModel.addHook('beforeCreate', async (auth: Model) => {
   const hashedPassword: string = await hash(auth.dataValues.password as string, SALT_ROUND);
   auth.dataValues.password = hashedPassword;
 });
 
-AuthModel.prototype.comparePassword = async function (password: string, hashedPassword: string): Promise<boolean> {
+AuthModel.prototype.dataValues.comparePassword = async function (password: string, hashedPassword: string): Promise<boolean> {
   return compare(password, hashedPassword);
 };
 
-AuthModel.prototype.hashPassword = async function (this: AuthModelInstance, password: string): Promise<string> {
+AuthModel.prototype.dataValues.hashPassword = async function (password: string): Promise<string> {
   return hash(password, SALT_ROUND);
 };
 

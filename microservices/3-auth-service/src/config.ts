@@ -20,6 +20,9 @@ if (process.env.ENABLE_APM === '1') {
 class Config {
   public NODE_ENV: string | undefined;
   public RABBITMQ_ENDPOINT: string | undefined;
+  public RABBITMQ_EXCHANGE_NOTIFICATION_NAME: string | undefined;
+  public RABBITMQ_ROUTING_NOTIFICATION_KEY: string | undefined;
+
   public MYSQL_DB: string | undefined;
   public JWT_TOKEN: string | undefined;
   public CLOUD_NAME: string | undefined;
@@ -35,6 +38,8 @@ class Config {
     this.JWT_TOKEN = process.env.JWT_TOKEN || '';
     this.GATEWAY_JWT_TOKEN = process.env.GATEWAY_JWT_TOKEN || '';
     this.RABBITMQ_ENDPOINT = process.env.RABBITMQ_ENDPOINT || '';
+    this.RABBITMQ_EXCHANGE_NOTIFICATION_NAME = process.env.RABBITMQ_EXCHANGE_NOTIFICATION_NAME || '';
+    this.RABBITMQ_ROUTING_NOTIFICATION_KEY = process.env.RABBITMQ_ROUTING_NOTIFICATION_KEY || '';
     this.MYSQL_DB = process.env.MYSQL_DB || '';
     this.CLOUD_NAME = process.env.CLOUD_NAME || '';
     this.CLOUD_API_KEY = process.env.CLOUD_API_KEY || '';
