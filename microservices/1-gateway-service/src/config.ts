@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-
 dotenv.config({});
 
 // if (process.env.ENABLE_APM === '1') {
@@ -47,7 +46,7 @@ class Config {
     this.REVIEW_BASE_URL = process.env.REVIEW_BASE_URL || '';
     this.REDIS_HOST = process.env.REDIS_HOST || '';
     this.ELASTIC_SEARCH_URL = process.env.ELASTIC_SEARCH_URL || '';
-  }
-}
 
+}
+}
 export const config: Config = new Config();
