@@ -1,10 +1,9 @@
 import http from 'http';
-
+import { Application, Request, Response, NextFunction, json, urlencoded } from 'express';
 import 'express-async-errors';
 import { CustomError, IAuthPayload, IErrorResponse, winstonLogger } from '@salman-eng1/marketplace-shared';
 import { Logger } from 'winston';
 import { config } from '@auth/config';
-import { Application, Request, Response, NextFunction, json, urlencoded } from 'express';
 import hpp from 'hpp';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -74,12 +73,15 @@ function startElasticSearch(): void {
 function authErrorHandler(app: Application): void {
   app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
     log.log('error', `AuthService ${error.comingFrom}:`, error);
+    console.log(`${error}:`);
+
     if (error instanceof CustomError) {
       res.status(error.statusCode).json(error.serializeErrors());
     }
     next();
   });
 }
+
 
 function startServer(app: Application): void {
   try {

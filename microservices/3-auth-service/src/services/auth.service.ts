@@ -6,7 +6,6 @@ import { IAuthBuyerMessageDetails, IAuthDocument, firstLetterUppercase } from "@
 import { sign } from "jsonwebtoken";
 import { lowerCase, omit } from "lodash";
 import { Model, Op } from "sequelize";
-import { tokenToString } from "typescript";
 
 export async function createAuthUser(data: IAuthDocument): Promise<IAuthDocument> {
   const result = await AuthModel.create(data)
@@ -42,7 +41,7 @@ export async function getAuthUserById(authId: number): Promise<IAuthDocument> {
       exclude: ['password']
     }
   }) as Model;
-  return user.dataValues;
+  return user?.dataValues;
 }
 
 
@@ -52,14 +51,14 @@ export async function getUserByUsernameOrEmail(username: string, email: string):
       [Op.or]: [{ username: firstLetterUppercase(username) }, { email: lowerCase(email) }],
     }
   }) as Model;
-  return user.dataValues
+  return user?.dataValues
 }
 
 export async function getUserByUsername(username: string): Promise<IAuthDocument> {
   const user = await AuthModel.findOne({
     where: { username: firstLetterUppercase(username) }
   }) as Model;
-  return user.dataValues
+  return user?.dataValues
 }
 
 
@@ -69,7 +68,7 @@ export async function getAuthUserByPasswordToken(token: string): Promise<IAuthDo
       [Op.and]: [{ passwordResetToken: token }, { passwordResetExpires: { [Op.gt]: new Date() } }]
     }
   }) as Model;
-  return user.dataValues
+  return user?.dataValues
 }
 
 
@@ -81,11 +80,11 @@ export async function getUserByEmail(email: string): Promise<IAuthDocument> {
       email: lowerCase(email)
     }
   }) as Model;
-  return user.dataValues
+  return user?.dataValues
 }
 
 
-export async function getAuthUserByVerficationToken(token: string): Promise<IAuthDocument> {
+export async function getAuthUserByVerificationToken(token: string): Promise<IAuthDocument> {
   const user: Model = await AuthModel.findOne({
     where: {
       emailVerificationToken: token
@@ -94,14 +93,14 @@ export async function getAuthUserByVerficationToken(token: string): Promise<IAut
       exclude: ['password']
     }
   }) as Model;
-  return user.dataValues
+  return user?.dataValues
 }
 
 
 
 
 
-export async function updateVerfyEmailField(authId: number, emailVerified: number, emailVerificationToken: string): Promise<void> {
+export async function updateVerifyEmailField(authId: number, emailVerified: number, emailVerificationToken: string): Promise<void> {
   await AuthModel.update({
     emailVerified,
     emailVerificationToken
@@ -115,6 +114,18 @@ export async function updateVerfyEmailField(authId: number, emailVerified: numbe
 }
 
 
+export async function updatePasswordToken(authId: number, token:string, tokenExpiration: Date): Promise<void> {
+  await AuthModel.update({
+    passwordResetToken: token,
+    passwordResetExpires: tokenExpiration
+  },
+    {
+      where: {
+        id: authId
+
+      }
+    })
+}
 
 
 export async function updatePassword(authId: number, password:string): Promise<void> {

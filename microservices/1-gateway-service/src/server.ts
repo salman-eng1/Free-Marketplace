@@ -54,8 +54,9 @@ export class GatewayServer {
         app.use((req:Request, _res:Response, next: NextFunction) => {
             if (req.session?.jwt){
                 axiosAuthInstance.defaults.headers['Authorization']= `Bearer ${req.session?.jwt}`
-                next()
             }
+            next();
+
         })
     }
 

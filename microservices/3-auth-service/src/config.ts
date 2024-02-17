@@ -51,9 +51,9 @@ class Config {
 
   public cloudinaryConfig(): void {
     cloudinary.v2.config({
-      cloud_name: this.CLOUD_NAME,
-      api_key: this.CLOUD_API_KEY,
-      api_secret: this.CLOUD_API_SECRET
+      cloud_name: "dbnhzs3qn",
+      api_key: "999272253827149",
+      api_secret: "5-HBhze2XpNULDA2oadK_-ufjLk",
     });
   }
 }

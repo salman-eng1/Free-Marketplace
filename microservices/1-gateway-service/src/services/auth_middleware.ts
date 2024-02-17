@@ -29,4 +29,4 @@ class AuthMiddleware {
     }
 }
 
-export const authMiddleware = new AuthMiddleware()
+export const authMiddleware: AuthMiddleware = new AuthMiddleware()

@@ -7,6 +7,6 @@ export class SignUp{
     public async create(req: Request, res:Response): Promise<void>{
         const response: AxiosResponse= await authService.signUp(req.body)
         req.session= {jwt: response.data.token}
-        res.status(StatusCodes.CREATED).json({message: response.data.message, date: response.data.user})
+        res.status(StatusCodes.CREATED).json({message: response.data.message, date: response.data})
     }
 }
