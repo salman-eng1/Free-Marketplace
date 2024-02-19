@@ -1,7 +1,7 @@
 import { SignIn } from '@gateway/controllers/auth/signin';
 import { SignUp } from '@gateway/controllers/auth/signup';
 import { VerifyEmail } from '@gateway/controllers/auth/verify-email';
-import { Password } from '@gateway/controllers/password';
+import { Password } from '@gateway/controllers/auth/password';
 import express, { Router } from 'express'
 
 class AuthRoutes {

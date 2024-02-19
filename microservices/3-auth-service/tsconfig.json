@@ -30,6 +30,6 @@
          
     }
   },
-  "include": ["src"],
+  "include": ["src", "../1-gateway-service/src/controllers/auth/refresh-token.ts"],
   "exclude": ["node_modules"]
 }

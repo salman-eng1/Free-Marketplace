@@ -30,6 +30,6 @@
          
     }
   },
-  "include": ["src"],
+  "include": ["src", "../3-auth-service/src/controllers/refresh-token.ts"],
   "exclude": ["node_modules"]
 }
