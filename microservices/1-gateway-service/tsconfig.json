@@ -30,6 +30,6 @@
          
     }
   },
-  "include": ["src", "../3-auth-service/src/controllers/refresh-token.ts"],
+  "include": ["src", "../3-gateway-service/src/controllers/refresh-token.ts"],
   "exclude": ["node_modules"]
 }

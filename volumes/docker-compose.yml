@@ -149,11 +149,42 @@ services:
 #      - EMAIL_PORT=465
 #      - SENDER_EMAIL=noreply@zeour.co.uk
 #      - SENDER_PASSWORD=Temp@@2022
-#      - ELASTIC_SEARCH_URL=http://localhost:9200
+#      - ELASTIC_SEARCH_URL=http://elasticsearch_container:9200
 #      - ELASTIC_APM_SERVER_URL=http://localhost:8200
 #      - ELASTIC_APM_SECRET_TOKEN=
 #    depends_on: 
 #      - elasticsearch
+
+
+  auth:
+    container_name: auth
+    build:
+      context: ../microservices/3-auth-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4002:4002
+    env_file: ../microservices/3-auth-service/.env
+    environment:
+      - GATEWAY_JWT_TOKEN=1282722b942e08c8a6cb033aa6ce850e
+      - ENABLE_APM=0
+      - JWT_TOKEN=8db8f85991bb28f45ac0107f2a1b349c
+      - NODE_ENV=development
+      - API_GATEWAY_URL=http://gateway_container:4000
+      - RABBITMQ_ENDPOINT=amqp://jobberuser:jobberpass@localhost:5672
+      - RABBITMQ_EXCHANGE_NOTIFICATION_NAME =marketplace-buyer-update
+      - RABBITMQ_ROUTING_NOTIFICATION_KEY =user-buyer
+      - CLIENT_URL=http://localhost:3000
+      - MYSQL_DB=mysql://jobbber:api@localhost:3306/jobber_auth
+      - CLOUD_NAME="dbnhzs3qn"
+      - CLOUD_API_KEY="999272253827149"
+      - CLOUD_API_SECRET="5-HBhze2XpNULDA2oadK_-ufjLk"
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
+      - ELASTIC_APM_SERVER_URL=http://localhost:8200
+      - ELASTIC_APM_SECRET_TOKEN=
+    depends_on: 
+      - elasticsearch
+      - mysql
 
 networks:
   elastic:

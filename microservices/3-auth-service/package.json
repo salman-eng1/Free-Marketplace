@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@elastic/elasticsearch": "^8.12.0",
+    "@elastic/elasticsearch": "^8.12.2",
     "@salman-eng1/marketplace-shared": "^0.0.3",
     "amqplib": "^0.10.3",
     "bcrypt": "^5.1.1",

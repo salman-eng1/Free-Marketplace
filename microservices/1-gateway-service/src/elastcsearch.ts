@@ -36,4 +36,6 @@ class ElasticSearch {
     }
 }
 
+
+
 export const elasticSearch: ElasticSearch = new ElasticSearch()
