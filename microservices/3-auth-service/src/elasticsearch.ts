@@ -1,7 +1,7 @@
 import {Client} from '@elastic/elasticsearch'
 import {ClusterHealthResponse, GetResponse} from '@elastic/elasticsearch/lib/api/types'
 import {config} from '@auth/config'
-import { winstonLogger } from '@salman-eng1/marketplace-shared';
+import { ISellerGig, winstonLogger } from '@salman-eng1/marketplace-shared';
 import { Logger } from 'winston';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'authElasticSearchServer', 'debug');
@@ -12,7 +12,7 @@ node: `${config.ELASTIC_SEARCH_URL}`
 })
 
 
-export async function checkConnection(): Promise<void> {
+ async function checkConnection(): Promise<void> {
     let isConnected = false;
     while (!isConnected) {
         log.info(`AuthService Connecting to Elasticsearch...`);
@@ -29,13 +29,13 @@ export async function checkConnection(): Promise<void> {
   }
 
 
-export async function checkIfIndexExists(indexName: string): Promise<boolean>{
+ async function checkIfIndexExists(indexName: string): Promise<boolean>{
   const result:boolean=await elasticSearchClient.indices.exists({index: indexName});
   return result;
   }
 
 
-  export async function createIndex(indexName: string): Promise<void>{
+   async function createIndex(indexName: string): Promise<void>{
     try{
       const result: boolean=await checkIfIndexExists(indexName)
       if (result){
@@ -55,7 +55,7 @@ export async function checkIfIndexExists(indexName: string): Promise<boolean>{
 
 
 
-  export async function getDocumentById(index:string, gigId:string) {
+   async function getDocumentById(index:string, gigId:string):Promise<ISellerGig> {
     try{
 
 const result: GetResponse= await elasticSearchClient.get({
@@ -63,9 +63,12 @@ const result: GetResponse= await elasticSearchClient.get({
    id: gigId
 })
 
-return result._source
+return result._source as ISellerGig
     }catch(error){
       log.log(`error`, 'AuthService getDocumentById() method error',error)
-      return{}
+      return{} as ISellerGig
     }
   }
+
+
+  export { elasticSearchClient, checkConnection, createIndex, getDocumentById };
