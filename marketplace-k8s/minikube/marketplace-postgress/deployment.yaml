@@ -20,9 +20,15 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: POSTGRES_USER
-          value: jobber
+          valueFrom:
+            secretKeyRef:
+              name: market-backend-secret
+              key: market-postgres-password
         - name: POSTGRES_PASSWORD
-          value: api
+          valueFrom:
+            secretKeyRef:
+              name: market-backend-secret
+              key: market-postgres-password
         - name: POSTGRES_DB
           value: jobber_reviews
         - name: PGDATA

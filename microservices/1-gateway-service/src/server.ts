@@ -1,3 +1,4 @@
+import  'express-async-errors'
 import { Application, NextFunction, Request, Response, json, urlencoded } from 'express';
 import { IErrorResponse, winstonLogger, CustomError } from '@salman-eng1/marketplace-shared';
 import { Logger } from 'winston';
@@ -12,7 +13,6 @@ import { config } from '@gateway/config';
 import { elasticSearch } from '@gateway/elastcsearch';
 import { appRoutes } from '@gateway/routes';
 import { axiosAuthInstance } from '@gateway/services/api/auth.service';
-
 
 const SERVER_PORT = 4000;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, "apiGatewayServer", "");

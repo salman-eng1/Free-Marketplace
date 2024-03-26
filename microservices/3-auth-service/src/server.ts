@@ -1,3 +1,4 @@
+import  'express-async-errors'
 import http from 'http';
 import { Application, Request, Response, NextFunction, json, urlencoded } from 'express';
 import 'express-async-errors';
