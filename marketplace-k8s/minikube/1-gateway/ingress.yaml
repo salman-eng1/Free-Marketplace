@@ -3,23 +3,25 @@ kind: Ingress
 metadata:
   name: market-gateway-ingress
   namespace: production
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx-gateway
+  ingressClassName: nginx
   defaultBackend:
-   service:
-     name: market-gateway
-     port:
-       number: 4000
+    service:
+      name: market-gateway
+      port: 
+        number: 4000
+  tls:
+     - hosts:
+       - marketplace.com
+       secretName: market-gateway-tls
   rules:
-    host: marketplace.com
-  - http:
+  - host: marketplace.com
+    http:
       paths:
       - path: /api/gateway/v1
         pathType: Prefix
         backend:
           service:
             name: market-gateway
-            port:
+            port: 
               number: 4000
