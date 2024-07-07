@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: market-auth
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: market-auth
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: market-auth
+    spec:
+      containers:
+      - name: market-auth
+        image: eng9/marketplace-auth:stable
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "0.5"
+          requests:
+            cpu: 100m
+            memory: 150Mi
+        ports:
+        - name: auth
+          containerPort: 4002
+        env:
+          - name: ENABLE_APM
+            value: '1'
+          - name: NODE_ENV
+            value: 'production'
+          - name: GATEWAY_JWT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: gateway-jwt-token
+          - name: JWT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: jwt-token
+          - name: RABBITMQ_ENDPOINT
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: market-rabbitmq-endpoint
+          - name: MYSQL_DB
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: market-mysql-db
+          - name: CLOUD_NAME
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: cloud-name
+          - name: CLOUD_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: cloud-api-key
+          - name: CLOUD_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: cloud-api-secret
+          - name: CLIENT_URL
+            value: 'https://marketapp.info'
+          - name: API_GATEWAY_URL
+            value: 'http://market-gateway.production.svc.cluster.local:4000'
+          - name: ELASTIC_SEARCH_URL
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: market-elasticsearch-url
+          - name: ELASTIC_APM_SERVER_URL
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key:  market-elastic-apm-server-url
+          - name: ELASTIC_APM_SECRET_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: market-elastic-apm-secret-token

@@ -1,0 +1,15 @@
+# Specifies the API version for the StorageClass resource.
+apiVersion: storage.k8s.io/v1  
+# Defines the type of Kubernetes resource, in this case, a StorageClass.
+kind: StorageClass  
+metadata:
+# Specifies the name of the StorageClass.
+  name: redis-local-storage
+  # Specifies the volume plugin or provisioner that will be used to create a volume when a PersistentVolumeClaim (PVC) is created.  
+provisioner: kubernetes.io/no-provisioner
+# Specifies when volume binding should occur. Possible values are Immediate or WaitForFirstConsumer.  
+volumeBindingMode: WaitForFirstConsumer
+# Specifies whether the volume can be expanded after creation. Set to true to enable volume expansion. 
+allowVolumeExpansion: true
+# Specifies the action to be taken when a PersistentVolume 
+reclaimPolicy: Delete  
