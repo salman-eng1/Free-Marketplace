@@ -1,4 +1,5 @@
 import http from 'http';
+
 import 'express-async-errors';
 import { CustomError, IAuthPayload, IErrorResponse, winstonLogger } from '@salman-eng1/marketplace-shared';
 import { Logger } from 'winston';
@@ -9,6 +10,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { verify } from 'jsonwebtoken';
 import compression from 'compression';
+
 import { checkConnection } from '@review/elasticsearch';
 import { appRoutes } from '@review/routes';
 import { createConnection } from '@review/queues/connection';

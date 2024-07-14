@@ -15,7 +15,7 @@ const pool: Pool = new Pool({
   //   ssl: {
   //     rejectUnauthorized: false
   //   }
-  })
+  });
 // });
 
 pool.on('error', (error: Error) => {
