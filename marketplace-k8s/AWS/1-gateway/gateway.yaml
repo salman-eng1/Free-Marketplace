@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: market-gateway
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: market-gateway
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25% 
+      maxSurge: 25%
+  template:
+    metadata:
+      labels:
+        app: market-gateway
+    spec:
+      containers:
+      - name: market-gateway
+        image: eng9/marketplace-gateway:stable
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: '0.5'  # 500 millicores (0.5 CPU)
+            memory: 512Mi  # Reduced to 512 MiB
+          requests:
+            cpu: 100m  # 100 millicores (0.1 CPU)
+            memory: 100Mi  # Reduced to 100 MiB
+        ports:
+        - name: gateway
+          containerPort: 4000
+        env:
+          - name: ENABLE_APM
+            value: '1'
+          - name: NODE_ENV
+            value: 'production'
+          - name: SECRET_KEY_ONE
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: secret-key-one
+          - name: SECRET_KEY_TWO
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: secret-key-two
+          - name: GATEWAY_JWT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: gateway-jwt-token
+          - name: JWT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: jwt-token
+          - name: CLIENT_URL
+            value: 'https://marketapp.info'
+          - name: AUTH_BASE_URL
+            value: 'http://market-auth.production.svc.cluster.local:4002'
+          - name: USERS_BASE_URL
+            value: 'http://market-user.production.svc.cluster.local:4003'
+          - name: GIG_BASE_URL
+            value: 'http://market-gig.production.svc.cluster.local:4008'
+          - name: MESSAGE_BASE_URL
+            value: 'http://market-chat.production.svc.cluster.local:4005'
+          - name: ORDER_BASE_URL
+            value: 'http://market-order.production.svc.cluster.local:4006'
+          - name: REVIEW_BASE_URL
+            value: 'http://market-review.production.svc.cluster.local:4007'
+          - name: REDIS_HOST
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: market-redis-host
+          - name: ELASTIC_SEARCH_URL
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: market-elasticsearch-url
+          - name: ELASTIC_APM_SERVER_URL
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key:  market-elastic-apm-server-url
+          - name: ELASTIC_APM_SECRET_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: market-backend-secret
+                key: market-elastic-apm-secret-token

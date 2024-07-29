@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: market-gateway-ingress
+  namespace: production
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: market-gateway
+      port: 
+        number: 4000
+  tls:
+     - hosts:
+       - marketplace.com
+       secretName: market-gateway-tls
+  rules:
+  - host: marketplace.com
+    http:
+      paths:
+      - path: /api/gateway/v1
+        pathType: Prefix
+        backend:
+          service:
+            name: market-gateway
+            port: 
+              number: 4000
