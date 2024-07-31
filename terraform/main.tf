@@ -32,3 +32,9 @@ prv3_id=module.subnets.prv3_id
 prv4_id=module.subnets.prv4_id
 
 }
+module "elasticache" {
+  source = "./elasticache"
+prv3_id=module.subnets.prv3_id
+prv4_id=module.subnets.prv4_id
+marketplace-redis-sg=module.sgw.marketplace-redis-sg
+}

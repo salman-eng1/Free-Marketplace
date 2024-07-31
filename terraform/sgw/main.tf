@@ -77,3 +77,8 @@ resource "aws_security_group" "marketplace-redis-sg" {
     Name = "marketplace-redis-sg"
   }
 }
+
+output "marketplace-redis-sg" {
+  value = aws_security_group.marketplace-redis-sg.id
+}
+
