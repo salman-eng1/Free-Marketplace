@@ -38,7 +38,7 @@ spec:
           - name: NODE_ENV
             value: 'production'
           - name: CLUSTER_TYPE
-            value: 'minikube'
+            value: 'AWS'
           - name: GATEWAY_JWT_TOKEN
             valueFrom:
               secretKeyRef:
