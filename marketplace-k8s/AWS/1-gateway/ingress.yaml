@@ -3,8 +3,24 @@ kind: Ingress
 metadata:
   name: market-gateway-ingress
   namespace: production
-spec:
-  ingressClassName: nginx
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: market-gateway-ingress
+    spec:alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-path: /gateway-health
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '120'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '10'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+
+
+
+
+
+  ingressClassName: alb
   defaultBackend:
     service:
       name: market-gateway
@@ -12,10 +28,10 @@ spec:
         number: 4000
   tls:
      - hosts:
-       - marketplace.com
-       secretName: market-gateway-tls
+       - '*.markettest.store'
+      #  secretName: market-gateway-tls
   rules:
-  - host: marketplace.com
+  - host: api.markettest.store
     http:
       paths:
       - path: /api/gateway/v1
