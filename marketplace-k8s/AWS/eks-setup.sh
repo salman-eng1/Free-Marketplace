@@ -16,7 +16,7 @@ eksctl utils associate-iam-oidc-provider \
 eksctl create nodegroup --cluster=marketplace \
 --region=us-east-1 \
 --subnet-ids=subnet-092e76e142f707da9,subnet-0d9637e1d3e42baa2 \
---node-type=t2.micro \
+--node-type=t3.medium \
 --nodes=4 \
 --nodes-min=4 \
 --nodes-max=6 \
@@ -30,6 +30,9 @@ eksctl create nodegroup --cluster=marketplace \
 --appmesh-access \
 --alb-ingress-access \
 --node-private-networking
+
+# the link below is the guide to install aws load-balancer using helm
+#https://docs.aws.amazon.com/eks/latest/userguide/lbc-helm.html
 
 #download the iam_role policy
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/install/iam_policy.json
@@ -62,7 +65,7 @@ eksctl create iamserviceaccount \
 #update repo
 #helm repo update 
 
-# add the charts to your  in order to install the aws loadbalancer controller
+# add the charts to your cluster in order to install the aws loadbalancer controller
 #helm repo add eks https://aws.github.io/eks-charts
 #update repo
 #helm repo update 
@@ -75,3 +78,12 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set region=us-east-1 \
   --set vpcId=vpc-05f142f6bf978fcb6 \
   --set image.repository=602401143452.dkr.ecr.us-east-1.amazonaws.com/amazon/aws-load-balancer-controller \
+
+
+# create service account for external dns after creating the needed policy
+eksctl create iamserviceaccount \
+  --cluster=marketplace \
+  --namespace=production \
+  --name=gateway-external-dns \
+  --attach-policy-arn=arn:aws:iam::193003523648:policy/AllowExternalDNSUpdates \
+  --approve

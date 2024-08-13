@@ -3,6 +3,9 @@ kind: Service
 metadata:
   name: market-gateway
   namespace: production
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: api.markettest.store
+    external-dns.alpha.kubernetes.io/ttl: "60"
 spec:
   type: ClusterIP
   selector:

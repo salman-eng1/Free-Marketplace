@@ -5,7 +5,7 @@ metadata:
   namespace: production
   annotations:
     alb.ingress.kubernetes.io/load-balancer-name: market-gateway-ingress
-    spec:alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
     alb.ingress.kubernetes.io/healthcheck-port: traffic-port
     alb.ingress.kubernetes.io/healthcheck-path: /gateway-health
@@ -15,11 +15,16 @@ metadata:
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '10'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/subnets: subnet-0b533aae5e652ee7d, subnet-0640db802c9fdb38c  #add the vpc public subnet ids
+    alb.ingress.kubernetes.io/auth-session-cookie: session #get the name from the server.ts in gateway service
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.type=app_cookie,stickiness.app_cookie.cookie_name=session,deregistration_delay.timeout_seconds=60
+    alb.ingress.kubernetes.io/target-type: ip
+    external-dns.alpha.kubernetes.io/hostname: api.markettest.store
 
 
 
 
-
+spec:
   ingressClassName: alb
   defaultBackend:
     service:
@@ -29,7 +34,6 @@ metadata:
   tls:
      - hosts:
        - '*.markettest.store'
-      #  secretName: market-gateway-tls
   rules:
   - host: api.markettest.store
     http:
