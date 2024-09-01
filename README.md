@@ -34,17 +34,8 @@ This project is a **Marketplace for Selling Services** built using a microservic
 - **Error Handling**:
   - Client errors will be sent to the API Gateway.
   - Other errors will be sent to the monitoring and logging system.
-  
+
 ![Project Architecture Diagram](images/project_architecture.png)
-
-
-## Non-functional Requirements
-
-- **Scalability**: The system should be able to scale to accommodate increased load during peak times.
-- **Availability**: The system should be available 99.99% of the time. A failover mechanism should ensure high availability in case of server failures.
-- **Reliability**: The system should be dependable.
-- **Maintainability**: Code should follow coding standards and be well-documented. Regular code reviews and automated testing should be performed.
-- **Usability**: Users should find the system easy to use.
 
 
 ## Inter-Process communication
