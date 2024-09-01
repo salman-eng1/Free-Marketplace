@@ -32,14 +32,14 @@ This project is a **Marketplace for Selling Services** built using a microservic
 - **Language**: TypeScript
 - **Containerization**: Docker
 - **CI/CD**: Jenkins
-- **Development**: Minikube
-- **Deployment**: AWS EKS, Terraform, Helm, eksctl
+- **Development Environment**: Minikube
+- **Production Environment**: AWS EKS, Terraform, Helm, eksctl
 - **Load Balancing & DNS**: Ingress, Route 53, External DNS
 - **Databases**: RDS (PostgreSQL, MySQL), MongoDB Cloud, Elasticsearch Cloud
 
 ## Infrastructure Diagram
 
-![AWS Infrastructure Diagram](path/to/your/image.png)
+![AWS Infrastructure Diagram](production_infrastructure.png)
 
 *(Attach your infrastructure diagram here)*
 
