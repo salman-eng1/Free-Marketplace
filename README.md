@@ -17,14 +17,15 @@ This project is a **Marketplace for Selling Services** built using a microservic
 
 ## Services
 
-1. **API Gateway**
-2. **Notification Emails**
-3. **Auth Service**
-4. **User Service**
-5. **Gigs Service**
-6. **Chat Service**
-7. **Order Service**
-8. **Review Service**
+- **API Gateway**: Handles requests from external clients and routes them to the appropriate services.
+- **Notification Emails**: Sends email notifications to users.
+- **Auth Service**: Manages user authentication and authorization.
+- **User Service**: Handles user-related data and functionalities.
+- **Gigs Service**: Manages service listings and related operations.
+- **Chat Service**: Provides real-time messaging between users.
+- **Order Service**: Manages orders and transactions.
+- **Review Service**: Allows users to leave reviews on services.
+
 
 ## Technologies Used
 
