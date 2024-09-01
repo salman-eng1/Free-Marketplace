@@ -15,49 +15,42 @@ This project is a **Marketplace for Selling Services** built using a microservic
 - **Database Management**: Uses RDS for relational data, MongoDB Cloud for NoSQL, and Elasticsearch Cloud for logging.
 - **DNS & Load Balancing**: Managed using Ingress, Route 53, and External DNS on Namecheap.
 
-## Services
 
-- **API Gateway**: Handles requests from external clients and routes them to the appropriate services.
-- **Notification Emails**: Sends email notifications to users.
-- **Auth Service**: Manages user authentication and authorization.
-- **User Service**: Handles user-related data and functionalities.
-- **Gigs Service**: Manages service listings and related operations.
-- **Chat Service**: Provides real-time messaging between users.
-- **Order Service**: Manages orders and transactions.
-- **Review Service**: Allows users to leave reviews on services.
+## services
+
+![services](images/services.png)
 
 
-## Technologies Used
 
-- **Language**: TypeScript
-- **Containerization**: Docker
-- **CI/CD**: Jenkins
-- **Development Environment**: Minikube
-- **Production Environment**: AWS EKS, Terraform, Helm, eksctl
-- **Load Balancing & DNS**: Ingress, Route 53, External DNS
-- **Databases**: RDS (PostgreSQL, MySQL), MongoDB Cloud, Elasticsearch Cloud
+## Design Decisions
 
-## Infrastructure Diagram
+- **No Direct Client-to-Microservice Communication**: All requests from clients must go through the API Gateway.
+- **Communication**:
+  - Between API Gateway and other microservices: HTTP-based and Socket.IO.
+  - Between microservices: Event-driven communication only (no HTTP request/response).
+- **Token Management**: Token generation and management will be handled by the API Gateway.
+- **Service Accessibility**: All microservices, except the API Gateway, will not be accessible from outside the system.
+- **Token Inclusion**: Every request from the API Gateway will include a token.
+- **Error Handling**:
+  - Client errors will be sent to the API Gateway.
+  - Other errors will be sent to the monitoring and logging system.
 
-![AWS Infrastructure Diagram](production_infrastructure.png)
 
-*(Attach your infrastructure diagram here)*
+## Non-functional Requirements
 
-## Installation & Setup
+- **Scalability**: The system should be able to scale to accommodate increased load during peak times.
+- **Availability**: The system should be available 99.99% of the time. A failover mechanism should ensure high availability in case of server failures.
+- **Reliability**: The system should be dependable.
+- **Maintainability**: Code should follow coding standards and be well-documented. Regular code reviews and automated testing should be performed.
+- **Usability**: Users should find the system easy to use.
 
-### Prerequisites
 
-- Docker
-- Minikube
-- Kubernetes CLI (kubectl)
-- Terraform
-- Helm
-- AWS CLI
-- Jenkins
+## Inter-Process communication
 
-### Development
+![Inter-Process communication](images/inter_communication.png)
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/marketplace-service-platform.git
-   cd marketplace-service-platform
+
+## Project Architecture Diagram
+
+![AWS Infrastructure Diagram](images/project_architecture.png)
+

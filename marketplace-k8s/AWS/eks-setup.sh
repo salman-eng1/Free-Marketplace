@@ -109,3 +109,15 @@ helm upgrade -i prometheus prometheus-community/prometheus \
     --set server.persistentVolume.storageClass="gp2"  \
     --set prometheus.service.type=NodePort             
 kubectl get pods -n prometheus
+
+
+
+# services
+# - **API Gateway**: Handles requests from external clients and routes them to the appropriate services.
+# - **Notification Emails**: Sends email notifications to users.
+# - **Auth Service**: Manages user authentication and authorization.
+# - **User Service**: Handles user-related data and functionalities.
+# - **Gigs Service**: Manages service listings and related operations.
+# - **Chat Service**: Provides real-time messaging between users.
+# - **Order Service**: Manages orders and transactions.
+# - **Review Service**: Allows users to leave reviews on services.
