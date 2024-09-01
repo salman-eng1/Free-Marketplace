@@ -1,0 +1,70 @@
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRole
+# metadata:
+#   name: aws-load-balancer-controller-role
+#   labels:
+#     app.kubernetes.io/instance: aws-load-balancer-controller
+#     app.kubernetes.io/managed-by: Helm
+#     app.kubernetes.io/name: aws-load-balancer-controller
+#     app.kubernetes.io/version: v2.8.2
+#     helm.sh/chart: aws-load-balancer-controller-1.8.2
+#   annotations:
+#     meta.helm.sh/release-name: aws-load-balancer-controller
+#     meta.helm.sh/release-namespace: kube-system
+# rules:
+# - apiGroups: ["elbv2.k8s.aws"]
+#   resources: ["targetgroupbindings"]
+#   verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+# - apiGroups: [""]
+#   resources: ["events"]
+#   verbs: ["create", "patch"]
+# - apiGroups: [""]
+#   resources: ["ingresses", "services", "endpoints", "namespaces", "nodes", "pods"]
+#   verbs: ["get", "list", "patch", "update", "watch"]
+# - apiGroups: ["extensions"]
+#   resources: ["ingresses", "services"]
+#   verbs: ["get", "list", "patch", "update", "watch"]
+# - apiGroups: ["networking.k8s.io"]
+#   resources: ["ingresses", "services"]
+#   verbs: ["get", "list", "patch", "update", "watch"]
+# - apiGroups: ["discovery.k8s.io"]
+#   resources: ["endpointslices"]
+#   verbs: ["get", "list", "watch"]
+# - apiGroups: ["elbv2.k8s.aws"]
+#   resources: ["ingressclassparams"]
+#   verbs: ["get", "list", "watch"]
+# - apiGroups: ["networking.k8s.io"]
+#   resources: ["ingressclasses"]
+#   verbs: ["get", "list", "watch"]
+# - apiGroups: ["elbv2.k8s.aws/status"]
+#   resources: ["ingresses/status", "pods/status", "services/status", "targetgroupbindings/status"]
+#   verbs: ["update", "patch"]
+# - apiGroups: ["extensions/status"]
+#   resources: ["ingresses/status", "pods/status", "services/status", "targetgroupbindings/status"]
+#   verbs: ["update", "patch"]
+# - apiGroups: ["networking.k8s.io/status"]
+#   resources: ["ingresses/status", "pods/status", "services/status", "targetgroupbindings/status"]
+#   verbs: ["update", "patch"]
+
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   name: aws-load-balancer-controller-rolebinding
+#   labels:
+#     app.kubernetes.io/instance: aws-load-balancer-controller
+#     app.kubernetes.io/managed-by: Helm
+#     app.kubernetes.io/name: aws-load-balancer-controller
+#     app.kubernetes.io/version: v2.8.2
+#     helm.sh/chart: aws-load-balancer-controller-1.8.2
+#   annotations:
+#     meta.helm.sh/release-name: aws-load-balancer-controller
+#     meta.helm.sh/release-namespace: kube-system
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: aws-load-balancer-controller-role
+# subjects:
+# - kind: ServiceAccount
+#   name: aws-load-balancer-controller
+#   namespace: kube-system

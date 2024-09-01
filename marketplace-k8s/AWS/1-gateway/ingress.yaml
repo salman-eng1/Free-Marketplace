@@ -15,7 +15,7 @@ metadata:
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '10'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
-    alb.ingress.kubernetes.io/subnets: subnet-0b533aae5e652ee7d, subnet-0640db802c9fdb38c  #add the vpc public subnet ids
+    alb.ingress.kubernetes.io/subnets: subnet-029e388e222cce822, subnet-07f910468858e1781  #add the vpc public subnet ids
     alb.ingress.kubernetes.io/auth-session-cookie: session #get the name from the server.ts in gateway service
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.type=app_cookie,stickiness.app_cookie.cookie_name=session,deregistration_delay.timeout_seconds=60
     alb.ingress.kubernetes.io/target-type: ip
@@ -25,7 +25,7 @@ metadata:
 
 
 spec:
-  ingressClassName: alb
+  ingressClassName: alb  #Specifies that the Ingress resource should be managed by an ALB controller. The ALB controller watches for Ingress resources with this class name and creates an ALB accordingly
   defaultBackend:
     service:
       name: market-gateway

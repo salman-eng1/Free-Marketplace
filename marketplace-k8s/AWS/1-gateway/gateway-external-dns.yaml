@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: gateway-external-dns
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::144134187792:role/eksctl-jobberapp-addon-iamserviceaccount-prod-Role1-7ZF4FfDDHduS  
+    eks.amazonaws.com/role-arn: arn:aws:iam::193003523648:role/eksctl-marketplace-cluster-addon-iamserviceac-Role1-79kpfj59ND8K
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole

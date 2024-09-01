@@ -2,13 +2,13 @@
 eksctl create cluster \
 --name=marketplace \
 --region=us-east-1 \
---vpc-private-subnets=subnet-092e76e142f707da9,subnet-0d9637e1d3e42baa2 \
+--vpc-private-subnets=subnet-093e9eb3f681e0b54,subnet-0158f37a6a2947d92 \
 --without-nodegroup
 
 #Associate IAM ODIC
 eksctl utils associate-iam-oidc-provider \
 --region=us-east-1 \
---cluster=marketplace \
+--cluster=marketplace-cluster \
 --approve
 
 #AWSS Create EKS Node group with private subnets
@@ -45,7 +45,7 @@ aws iam create-policy \
 #create the kubernetes service account named as aws-load-balancer-controller in the kube-system namespace
 # replace the arn with the arn used in the created policy
 eksctl create iamserviceaccount \
-  --cluster=marketplace \
+  --cluster=marketplace-cluster \
   --namespace=kube-system \
   --name=aws-load-balancer-controller \
   --role-name AmazonEKSLoadBalancerControllerRole \
@@ -72,18 +72,40 @@ eksctl create iamserviceaccount \
 
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   -n kube-system \
-  --set clusterName=marketplace \
+  --set clusterName=marketplace-cluster \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller \
   --set region=us-east-1 \
-  --set vpcId=vpc-05f142f6bf978fcb6 \
+  --set vpcId=vpc-0e104965de4a66d06 \
   --set image.repository=602401143452.dkr.ecr.us-east-1.amazonaws.com/amazon/aws-load-balancer-controller \
 
 
 # create service account for external dns after creating the needed policy
 eksctl create iamserviceaccount \
-  --cluster=marketplace \
+  --cluster=marketplace-cluster \
   --namespace=production \
   --name=gateway-external-dns \
   --attach-policy-arn=arn:aws:iam::193003523648:policy/AllowExternalDNSUpdates \
   --approve
+
+
+
+  # install ebs-csi-driver
+helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+helm repo update
+
+helm upgrade --install aws-ebs-csi-driver \
+    --namespace kube-system \
+    aws-ebs-csi-driver/aws-ebs-csi-driver
+
+
+
+    #install prometheus
+kubectl create namespace prometheus
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm upgrade -i prometheus prometheus-community/prometheus \
+    --namespace prometheus \
+    --set alertmanager.persistence.storageClass="gp2" \
+    --set server.persistentVolume.storageClass="gp2"  \
+    --set prometheus.service.type=NodePort             
+kubectl get pods -n prometheus
