@@ -34,6 +34,8 @@ This project is a **Marketplace for Selling Services** built using a microservic
 - **Error Handling**:
   - Client errors will be sent to the API Gateway.
   - Other errors will be sent to the monitoring and logging system.
+  
+![Project Architecture Diagram](images/project_architecture.png)
 
 
 ## Non-functional Requirements
@@ -51,10 +53,4 @@ This project is a **Marketplace for Selling Services** built using a microservic
 ![Inter-Process communication](images/inter_communication.png)
 
 
-
-
-## Project Architecture Diagram
-
-
-![AWS Infrastructure Diagram](images/project_architecture.png)
 
