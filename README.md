@@ -47,10 +47,14 @@ This project is a **Marketplace for Selling Services** built using a microservic
 
 ## Inter-Process communication
 
+
 ![Inter-Process communication](images/inter_communication.png)
 
 
+
+
 ## Project Architecture Diagram
+
 
 ![AWS Infrastructure Diagram](images/project_architecture.png)
 
