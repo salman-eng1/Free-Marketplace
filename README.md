@@ -47,11 +47,12 @@ This project is a **Marketplace for Selling Services** built using a microservic
 
 ### Infrastructure Provisioning
 - **Terraform**: Utilized to create and manage the following infrastructure components:
-  - **VPC** with 2 public subnets (for the bastion host) and 2 private subnets (for worker nodes).
+  - **VPC** with 2 public subnets (for the bastion host & NAT gateway) and 2 private subnets (for worker nodes).
   - **NAT Gateway** to enable internet access for worker nodes.
   - **S3**, and **DynamoDB** as terrafrom backend.
   - **Elasticache** for redis.
   - **RDS**: Provisioned with both PostgreSQL and MySQL databases.
+
 
 ### Kubernetes & Service Management
 - **eksctl**: Used to create IAM service accounts necessary for Kubernetes.
