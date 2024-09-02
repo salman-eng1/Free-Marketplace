@@ -43,10 +43,18 @@ This project is a **Marketplace for Selling Services** built using a microservic
 ![Project Architecture Diagram](images/project_architecture.png)
 
 
-## Inter-Process communication
+## Production Environment
 
+### Infrastructure Provisioning
+- **Terraform**: Utilized to create and manage the following infrastructure components:
+  - **VPC** with 2 public subnets (for the bastion host) and 2 private subnets (for worker nodes).
+  - **NAT Gateway** to enable internet access for worker nodes.
+  - **S3**, and **DynamoDB** as terrafrom backend.
+  - **Elasticache** for redis.
+  - **RDS**: Provisioned with both PostgreSQL and MySQL databases.
 
-![Inter-Process communication](images/inter_communication.png)
+### Kubernetes & Service Management
+- **eksctl**: Used to create IAM service accounts necessary for Kubernetes.
+- **Helm**: Deployed and manage LoadBalancer controller through Helm charts.
 
-
-
+![Infrastructure Diagram](images/production_infrastructure.png)
