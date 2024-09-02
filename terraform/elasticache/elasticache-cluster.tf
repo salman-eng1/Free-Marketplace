@@ -18,9 +18,10 @@ resource "aws_elasticache_replication_group" "redis-replica-group" {
   engine_version               = "7.1"
   security_group_ids          = [var.marketplace-redis-sg]
   subnet_group_name           = aws_elasticache_subnet_group.elasticache-subnet-group.name
+  depends_on = [ aws_elasticache_subnet_group.elasticache-subnet-group ]
 }
 
-resource "aws_elasticache_cluster" "redis-cluster" {
-  cluster_id           = "elasticache-redis-cluster"
-  replication_group_id = aws_elasticache_replication_group.redis-replica-group.id
-}
+# resource "aws_elasticache_cluster" "redis-cluster" {
+#   cluster_id           = "elasticache-redis-cluster"
+#   replication_group_id = aws_elasticache_replication_group.redis-replica-group.id
+# }

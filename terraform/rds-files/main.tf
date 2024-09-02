@@ -1,24 +1,3 @@
-variable "prv3_id" {
-  description = "The first private subnets"
-  type        = string
-}
-variable "prv4_id" {
-  description = "The second private subnet"
-  type        = string
-}
-variable "marketplace-postgres-sg" {
-  description = "postgres sgw"
-  type        = string
-}
-variable "marketplace-redis-sg" {
-  description = "redis sgw"
-  type        = string
-}
-variable "marketplace-mysql-sg" {
-  description = "mysql sgw"
-  type        = string
-}
-
 
 resource "aws_db_subnet_group" "subGP" {
   name       = "marktplace-rds-subnet-group"
@@ -36,7 +15,7 @@ resource "aws_db_instance" "postgres" {
   engine_version       = "16.3"
   instance_class       = "db.t3.micro"
   username             = "jobber"
-  password             = "api@dev@ops"
+  password             = "ApiDevOps2024!"
   parameter_group_name = "default.postgres16"
   storage_encrypted = false
   skip_final_snapshot  = true
@@ -49,4 +28,5 @@ resource "aws_db_instance" "postgres" {
     Name        = "MyReviewService_Free tier"
     Environment = "Production"
   }
+  depends_on = [ aws_db_subnet_group.subGP ]
 }

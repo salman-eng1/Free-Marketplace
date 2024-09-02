@@ -1,8 +1,3 @@
-variable "vpc_id" {
-  description = "The IGW ID to associate with the VPC"
-  type        = string
-}
-
 resource "aws_security_group" "marketplace-mysql-sg" {
   name        = "marketplace-mysql-sg"
   description = "Allow access for RDS database on port 3305"
@@ -76,9 +71,5 @@ resource "aws_security_group" "marketplace-redis-sg" {
   tags = {
     Name = "marketplace-redis-sg"
   }
-}
-
-output "marketplace-redis-sg" {
-  value = aws_security_group.marketplace-redis-sg.id
 }
 
