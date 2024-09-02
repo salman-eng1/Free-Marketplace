@@ -12,7 +12,8 @@ This project is a **Marketplace for Selling Services** built using a microservic
 - **API Gateway**: Handles requests and routes them to the appropriate services.
 - **CI/CD Pipeline**: Automated builds and deployments using Jenkins.
 - **Cloud Deployment**: Managed on AWS EKS with Terraform, Helm, and eksctl.
-- **Database Management**: Uses RDS for relational data, MongoDB Cloud for NoSQL, and Elastic Cloud for logging.
+- **Database Management**: Uses RDS for relational data and MongoDB Cloud for NoSQL.
+- **Logging and Monitoring**: Centralized with Elastic Cloud and Prometheus.
 - **DNS & Load Balancing**: Managed using Ingress, Route 53, and External DNS on Namecheap.
 
 ## Services
@@ -36,7 +37,7 @@ This project is a **Marketplace for Selling Services** built using a microservic
 - **Token Inclusion**: Every request from the API Gateway includes a token for security and identification.
 - **Error Handling**:
   - Client errors are routed back to the API Gateway.
-  - Other errors are logged and monitored using the Elastic Cloud logging system.
+  - Other errors are logged and monitored using Elastic Cloud and Prometheus.
 
 ![Project Architecture Diagram](images/project_architecture.png)
 
@@ -59,13 +60,11 @@ This project is a **Marketplace for Selling Services** built using a microservic
 
 ### Kubernetes & Service Management
 - **eksctl**: Utilized to create and manage the IAM service accounts required for Kubernetes operations.
-- **Helm**: Deployed and managed essential Kubernetes components, including the **AWS Load Balancer Controller** for efficient traffic routing and **Ingress** management and **Prometheus** for monitoring.
+- **Helm**: Deployed and managed essential Kubernetes components, including:
+  - **AWS Load Balancer Controller**: For efficient traffic routing and Ingress management.
+  - **Prometheus**: For detailed monitoring and alerting of infrastructure and application metrics.
 
-### Additional Services
-- **MongoDB Cloud**: Utilized as a managed NoSQL database service.
-- **Elastic Cloud**: Implemented as the logging and monitoring system, providing insights into application performance and errors.
-- **Monitoring and Alerts**: Includes integration with Prometheus and Grafana for real-time monitoring and alerting.
-
+  
 ## CI/CD Pipeline
 
 - **Jenkins**: Automates the build, testing, and deployment processes.
@@ -77,8 +76,10 @@ This project is a **Marketplace for Selling Services** built using a microservic
 
 - **IAM and Role-Based Access Control (RBAC)**: Ensures that each service and user has only the permissions they need.
 - **Encryption**: All sensitive data is encrypted both at rest (using AWS KMS) and in transit (using SSL/TLS).
-- **Monitoring**: Continuous monitoring of the infrastructure and applications using Elastic Cloud and Prometheus.
+- **API Gateway Security**: The API Gateway issues a token for every request that passes through it. This token is required for all internal service communications, ensuring that any request originating outside the API Gateway is rejected, enhancing the security of the system.
+- **Monitoring**: Continuous monitoring of the infrastructure and applications using Prometheus and Elastic Cloud.
 - **Backup and Disaster Recovery**: Regular backups of databases and critical components, with tested disaster recovery procedures.
+
 
 ## Conclusion
 
