@@ -59,7 +59,7 @@ This project is a **Marketplace for Selling Services** built using a microservic
 
 ### Kubernetes & Service Management
 - **eksctl**: Utilized to create and manage the IAM service accounts required for Kubernetes operations.
-- **Helm**: Deployed and managed the **AWS Load Balancer Controller** for efficient traffic routing and **Ingress** management.
+- **Helm**: Deployed and managed essential Kubernetes components, including the **AWS Load Balancer Controller** for efficient traffic routing and **Ingress** management and **Prometheus** for monitoring.
 
 ### Additional Services
 - **MongoDB Cloud**: Utilized as a managed NoSQL database service.
