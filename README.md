@@ -55,6 +55,8 @@ This project is a **Marketplace for Selling Services** built using a microservic
   - **EKS Worker Nodes**: Provisioned within the private subnets to run containerized applications.
   - **High Availability**: Ensured through multi-AZ deployments and redundancy across critical components.
 
+![Infrastructure Diagram](images/production_infrastructure.png)
+
 ### Kubernetes & Service Management
 - **eksctl**: Utilized to create and manage the IAM service accounts required for Kubernetes operations.
 - **Helm**: Deployed and managed essential Kubernetes components, including the **AWS Load Balancer Controller** for efficient traffic routing and **Ingress** management.
@@ -63,8 +65,6 @@ This project is a **Marketplace for Selling Services** built using a microservic
 - **MongoDB Cloud**: Utilized as a managed NoSQL database service.
 - **Elastic Cloud**: Implemented as the logging and monitoring system, providing insights into application performance and errors.
 - **Monitoring and Alerts**: Includes integration with Prometheus and Grafana for real-time monitoring and alerting.
-
-![Infrastructure Diagram](images/production_infrastructure.png)
 
 ## CI/CD Pipeline
 
