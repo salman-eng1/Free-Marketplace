@@ -61,10 +61,10 @@ This project is a **Marketplace for Selling Services** built using a microservic
 ### Kubernetes & Service Management
 - **eksctl**: Utilized to create and manage the IAM service accounts required for Kubernetes operations.
 - **Helm**: Deployed and managed essential Kubernetes components, including:
-  - **AWS Load Balancer Controller**: For efficient traffic routing and Ingress management.
-  - **Prometheus**: For detailed monitoring and alerting of infrastructure and application metrics.
+  - **AWS Load Balancer Controller**: Manages Application Load Balancers (ALB) for efficient traffic routing and Ingress management.
+    - **Prometheus**: For detailed monitoring and alerting of infrastructure and application metrics.
 
-  
+
 ## CI/CD Pipeline
 
 - **Jenkins**: Automates the build, testing, and deployment processes.
