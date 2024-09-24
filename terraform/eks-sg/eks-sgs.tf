@@ -16,6 +16,19 @@ resource "aws_security_group" "worker_node_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  # Allow Kubernetes API server access
   }
+    ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow Kubernetes API server access
+  }
+
+    ingress {
+    from_port   = 9090
+    to_port     = 9090
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow Kubernetes API server access
+  }
   egress {
     from_port   = 0
     to_port     = 0

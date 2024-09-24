@@ -1,0 +1,47 @@
+# apiVersion: storage.k8s.io/v1
+# kind: StorageClass
+# metadata:
+#   name: gp2
+# provisioner: kubernetes.io/aws-ebs
+# parameters:
+#   type: gp2
+#   fsType: ext4
+# reclaimPolicy: Retain
+# mountOptions:
+#   - debug
+# volumeBindingMode: Immediate
+#########################################333
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   annotations:
+#     meta.helm.sh/release-name: prometheus
+#     meta.helm.sh/release-namespace: prometheus
+#   creationTimestamp: "2024-09-07T21:24:51Z"
+#   finalizers:
+#   - kubernetes.io/pvc-protection
+#   labels:
+#     app: prometheus
+#     app.kubernetes.io/managed-by: Helm
+#     chart: prometheus-15.8.1
+#     component: alertmanager
+#     heritage: Helm
+#     release: prometheus
+#   name: prometheus-alertmanager
+#   namespace: prometheus
+#   resourceVersion: "6081"
+#   uid: d5e5ef31-45fe-4a6f-b986-ad824f2ccc78
+# spec:
+#   storageClassName: gp3
+#   accessModes:
+#   - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 2Gi
+
+
+alertmanager:
+  persistence:
+    enabled: true
+    storageClass: gp3
+    size: 8Gi

@@ -7,7 +7,7 @@ resource "aws_eks_cluster" "marketplace-cluster" {
   }
 
   depends_on = [
-    aws_iam_role.eks_cluster_role,
+    aws_iam_role.eks_cluster_role,var.vpc_id,var.sg_ids
   ]
 }
 
@@ -17,7 +17,7 @@ resource "aws_eks_node_group" "marketplace-node-group" {
   node_group_name = "marketplace-node-group"
   node_role_arn   = aws_iam_role.eks_worker_node_role.arn
   subnet_ids      = var.subnet_ids
-
+  
   scaling_config {
     desired_size = 2
     max_size     = 4
@@ -31,11 +31,12 @@ remote_access {
   ec2_ssh_key="marketplace"
   source_security_group_ids = [var.sg_ids]
 }
+
 disk_size = 20
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
   depends_on = [
-    aws_iam_role.eks_worker_node_role
+    aws_iam_role.eks_worker_node_role,var.subnet_ids
   ]
 }
 

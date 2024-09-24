@@ -1,14 +1,14 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: market-gateway-ingress
-  namespace: production
+  name: market-grafana-ingress
+  namespace: grafana
   annotations:
-    alb.ingress.kubernetes.io/load-balancer-name: market-gateway-ingress
+    alb.ingress.kubernetes.io/load-balancer-name: market-grafana-ingress
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
-    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
-    alb.ingress.kubernetes.io/healthcheck-path: /gateway-health
+    alb.ingress.kubernetes.io/healthcheck-port: "3000"
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health
     alb.ingress.kubernetes.io/healthcheck-interval-seconds: '120'
     alb.ingress.kubernetes.io/success-codes: '200'
     alb.ingress.kubernetes.io/healthy-threshold-count: '2'
@@ -16,10 +16,10 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/subnets: subnet-05f1b677809d12f6f,subnet-0ce5ba83432eb74da  #add the vpc public subnet ids
-    alb.ingress.kubernetes.io/auth-session-cookie: session #get the name from the server.ts in gateway service
-    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.type=app_cookie,stickiness.app_cookie.cookie_name=session,deregistration_delay.timeout_seconds=60
     alb.ingress.kubernetes.io/target-type: ip
-    external-dns.alpha.kubernetes.io/hostname: api.markettest.store
+    # this is the security group for worker nodes remote access
+    alb.ingress.kubernetes.io/security-groups: sg-0bc5d64d55ace4a1d
+    external-dns.alpha.kubernetes.io/hostname: grafana.markettest.store
 
 
 
@@ -28,20 +28,20 @@ spec:
   ingressClassName: alb  #Specifies that the Ingress resource should be managed by an ALB controller. The ALB controller watches for Ingress resources with this class name and creates an ALB accordingly
   defaultBackend:
     service:
-      name: market-gateway
+      name: grafana-server
       port: 
-        number: 4000
+        number: 80
   tls:
      - hosts:
        - '*.markettest.store'
   rules:
-  - host: api.markettest.store
+  - host: grafana.markettest.store
     http:
       paths:
-      - path: /api/gateway/v1
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: market-gateway
+            name: grafana-server
             port: 
-              number: 4000
+              number: 80

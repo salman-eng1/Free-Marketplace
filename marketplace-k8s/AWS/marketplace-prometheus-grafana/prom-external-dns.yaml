@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: gateway-external-dns
-  namespace: production
+  name: prometheus-external-dns
+  namespace: prometheus
   labels:
-    app.kubernetes.io/name: gateway-external-dns
+    app.kubernetes.io/name: prometheus-external-dns
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::503561454536:role/AmazonEKS_ExternalDNSRole
+    eks.amazonaws.com/role-arn: arn:aws:iam::503561454536:role/AmazonEKS_PrometheusExternalDNSRole
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: gateway-external-dns
+  name: prometheus-external-dns
   namespace: production
   labels:
-    app.kubernetes.io/name: gateway-external-dns
+    app.kubernetes.io/name: prometheus-external-dns
 rules:
   - apiGroups: [""]
     resources: ["services","endpoints","pods","nodes"]
@@ -29,40 +29,40 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: gateway-external-dns-viewer
-  namespace: production
+  name: prometheus-external-dns-viewer
+  namespace: prometheus
   labels:
-    app.kubernetes.io/name: gateway-external-dns
+    app.kubernetes.io/name: prometheus-external-dns
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: gateway-external-dns
+  name: prometheus-external-dns
 subjects:
   - kind: ServiceAccount
-    name: gateway-external-dns
-    namespace: production
+    name: prometheus-external-dns
+    namespace: prometheus
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway-external-dns
-  namespace: production
+  name: prometheus-external-dns
+  namespace: prometheus
   labels:
-    app.kubernetes.io/name: gateway-external-dns
+    app.kubernetes.io/name: prometheus-external-dns
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app.kubernetes.io/name: gateway-external-dns
+      app.kubernetes.io/name: prometheus-external-dns
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: gateway-external-dns
+        app.kubernetes.io/name: prometheus-external-dns
     spec:
-      serviceAccountName: gateway-external-dns
+      serviceAccountName: prometheus-external-dns
       containers:
-        - name: gateway-external-dns
+        - name: prometheus-external-dns
           # Get current version here
           # https://github.com/kubernetes-sigs/external-dns/releases
           image: registry.k8s.io/external-dns/external-dns:v0.14.0
@@ -72,7 +72,7 @@ spec:
             - --provider=aws
             - --aws-zone-type=public # only look at public hosted zones (valid values are public, private or no value for both)
             - --registry=txt         #the argument --registry=txt tells the service to use TXT records in the DNS zone to manage ownership of DNS records. This is often used to ensure that multiple instances of external-dns do not overwrite each other's records.
-            - --txt-owner-id=gateway-external-dns
+            - --txt-owner-id=prometheus-external-dns
           resources:
             limits:
               cpu: '0.5'

@@ -1,8 +1,8 @@
 #Create cluster
 eksctl create cluster \
---name=marketplace \
+--name=marketplace-cluster \
 --region=us-east-1 \
---vpc-private-subnets=subnet-093e9eb3f681e0b54,subnet-0158f37a6a2947d92 \
+--vpc-private-subnets=subnet-02d15b4e6ec96ce5f,subnet-04a7cae8a119bb6db \
 --without-nodegroup
 
 #Associate IAM ODIC
@@ -13,13 +13,13 @@ eksctl utils associate-iam-oidc-provider \
 
 #AWSS Create EKS Node group with private subnets
 
-eksctl create nodegroup --cluster=marketplace \
+eksctl create nodegroup --cluster=marketplace-cluster \
 --region=us-east-1 \
---subnet-ids=subnet-092e76e142f707da9,subnet-0d9637e1d3e42baa2 \
+--subnet-ids=subnet-02d15b4e6ec96ce5f,subnet-04a7cae8a119bb6db \
 --node-type=t3.medium \
 --nodes=4 \
---nodes-min=4 \
---nodes-max=6 \
+--nodes-min=2 \
+--nodes-max=4 \
 --node-volume-size=20 \
 --ssh-access=true \
 --ssh-public-key=marketplace \
@@ -76,9 +76,15 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller \
   --set region=us-east-1 \
-  --set vpcId=vpc-0e104965de4a66d06 \
+  --set vpcId=vpc-01d9a2e0f5d821079 \
   --set image.repository=602401143452.dkr.ecr.us-east-1.amazonaws.com/amazon/aws-load-balancer-controller \
 
+#unistall loadbalancer
+#helm uninstall aws-load-balancer-controller -n kube-system
+# eksctl delete iamserviceaccount \
+#   --cluster=marketplace-cluster \
+#   --namespace=kube-system \
+#   --name=aws-load-balancer-controller
 
 # create service account for external dns after creating the needed policy
 eksctl create iamserviceaccount \
@@ -88,6 +94,20 @@ eksctl create iamserviceaccount \
   --attach-policy-arn=arn:aws:iam::193003523648:policy/AllowExternalDNSUpdates \
   --approve
 
+
+eksctl create iamserviceaccount \
+        --name ebs-csi-controller-sa \
+        --namespace kube-system \
+        --cluster marketplace-cluster \
+        --role-name AmazonEKS_EBS_CSI_DriverRole \
+        --role-only \
+        --attach-policy-arn arn:aws:iam::193003523648:policy/Amazon_EBS_CSI_Driver \
+        --approve
+    
+
+    # aws iam attach-role-policy \
+    # --role-name eksctl-marketplace-cluster-nodegro-NodeInstanceRole-omczcUWECjr9 \
+    # --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess
 
 
   # install ebs-csi-driver
@@ -107,17 +127,10 @@ helm upgrade -i prometheus prometheus-community/prometheus \
     --namespace prometheus \
     --set alertmanager.persistence.storageClass="gp2" \
     --set server.persistentVolume.storageClass="gp2"  \
-    --set prometheus.service.type=NodePort             
+    --set prometheus.service.type=NodePort     
+            
 kubectl get pods -n prometheus
 
 
-
-# services
-# - **API Gateway**: Handles requests from external clients and routes them to the appropriate services.
-# - **Notification Emails**: Sends email notifications to users.
-# - **Auth Service**: Manages user authentication and authorization.
-# - **User Service**: Handles user-related data and functionalities.
-# - **Gigs Service**: Manages service listings and related operations.
-# - **Chat Service**: Provides real-time messaging between users.
-# - **Order Service**: Manages orders and transactions.
-# - **Review Service**: Allows users to leave reviews on services.
+#install grafana
+helm install grafana grafana/grafana --namespace grafana   --set persistence.storageClassName="gp2"   --set persistence.size="10Gi"   --set persistence.enabled=true   --set adminPassword="marketplace"   --set service.type=NodePort

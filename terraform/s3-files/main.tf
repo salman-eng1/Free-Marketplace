@@ -8,6 +8,7 @@ resource "aws_s3_bucket_versioning" "bucket-versioning" {
   versioning_configuration {
     status = "Enabled"
   }
+    depends_on = [aws_s3_bucket.remote-statefiles-bucket]
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encrypt" {
@@ -18,6 +19,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encrypt" {
       sse_algorithm     = "AES256"
     }
   }
+    depends_on = [aws_s3_bucket.remote-statefiles-bucket]
 }
 
 
